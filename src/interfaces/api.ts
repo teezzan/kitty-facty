@@ -1,3 +1,5 @@
+import { SortOrder } from "./constants";
+
 export type CatFactAPIArgs = {
   limit: number;
   page: number;
@@ -31,8 +33,3 @@ export type CatFactAPIResponse = {
 export type APIError = {
   error: string;
 };
-
-export enum SortOrder {
-  ASC = "asc",
-  DESC = "desc",
-}
