@@ -1,6 +1,7 @@
 export type CatFactAPIArgs = {
   limit: number;
   page: number;
+  maxLength: number;
   sortByLength: SortOrder | null;
   sortByAlphabet: SortOrder | null;
 };

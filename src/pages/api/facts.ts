@@ -14,6 +14,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 const baseUrl = "https://catfact.ninja/facts";
 const defaultLimit = 10;
 const defaultPage = 1;
+const defaultMaxLength = 140;
 
 export default async function handler(
   req: NextApiRequest,
@@ -52,7 +53,7 @@ const GetCatFacts = async (
 ): Promise<CatFactAPIResponse> => {
   try {
     const response = await axios.get(
-      `${baseUrl}?limit=${params.limit}&page=${params.page}`
+      `${baseUrl}?limit=${params.limit}&page=${params.page}&max_length=${params.maxLength}`
     );
 
     return {
@@ -71,6 +72,7 @@ const parseQueryStrings = (query: NextAPIQueryStrings): CatFactAPIArgs => {
   const page = parseInt(query.page as string, 10);
   const sortByLength = query.sortByLength as string;
   const sortByAlphabet = query.sortByAlphabet as string;
+  const maxLength = parseInt(query.maxLength as string, 10);
 
   const isValidAlphabetSortOrder = Object.values(SortOrder).includes(
     sortByAlphabet as SortOrder
@@ -83,6 +85,7 @@ const parseQueryStrings = (query: NextAPIQueryStrings): CatFactAPIArgs => {
   return {
     limit: perPage || defaultLimit,
     page: page || defaultPage,
+    maxLength: maxLength || defaultMaxLength,
     sortByLength: isValidLengthSortOrder ? (sortByLength as SortOrder) : null,
     sortByAlphabet: isValidAlphabetSortOrder
       ? (sortByAlphabet as SortOrder)
