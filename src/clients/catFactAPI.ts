@@ -31,7 +31,7 @@ export const GetCatFacts = async (
   }
 };
 
-const transformCatFactAPIResponse = (
+export const transformCatFactAPIResponse = (
   response: AxiosResponse<any, any>
 ): CatFactData => {
   const { data } = response;
