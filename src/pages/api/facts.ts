@@ -4,8 +4,10 @@ import {
   CatFactAPIArgs,
   CatFactAPIResponse,
   CatFactData,
+  Fact,
   NextAPIQueryStrings,
 } from "@/interfaces";
+import { data } from "autoprefixer";
 import axios, { AxiosResponse } from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -23,6 +25,10 @@ export default async function handler(
   const facts = await GetCatFacts(params);
   if (facts.isError) {
     res.status(500).json({ error: "Something went wrong" });
+  }
+
+  if (facts.data) {
+    facts.data.facts = addIDToCatFacts(facts.data.facts);
   }
   res.status(200).json(facts.data);
 }
@@ -48,11 +54,11 @@ const GetCatFacts = async (
 };
 
 const parseQueryStrings = (query: NextAPIQueryStrings) => {
-  const limit = parseInt(query.limit as string, 10);
+  const perPage = parseInt(query.perPage as string, 10);
   const page = parseInt(query.page as string, 10);
 
   return {
-    limit: isNaN(limit) ? defaultLimit : limit,
+    limit: isNaN(perPage) ? defaultLimit : perPage,
     page: isNaN(page) ? defaultPage : page,
   };
 };
@@ -61,12 +67,21 @@ const transformCatFactAPIResponse = (
   response: AxiosResponse<any, any>
 ): CatFactData => {
   const { data } = response;
-  const { current_page, per_page, total, data: facts } = data;
+  const { current_page, per_page, last_page, data: facts } = data;
 
   return {
-    currentPage: current_page,
-    perPage: per_page,
-    totalPages: total,
+    currentPage: Number(current_page),
+    perPage: Number(per_page),
+    totalPages: Number(last_page),
     facts,
   };
+};
+
+const addIDToCatFacts = (facts: Fact[]): Fact[] => {
+  return facts.map((fact, index) => {
+    return {
+      ...fact,
+      id: index + 1,
+    };
+  });
 };
