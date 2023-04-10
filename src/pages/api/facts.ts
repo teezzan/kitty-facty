@@ -6,8 +6,8 @@ import {
   CatFactData,
   Fact,
   NextAPIQueryStrings,
+  SortOrder,
 } from "@/interfaces";
-import { data } from "autoprefixer";
 import axios, { AxiosResponse } from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -17,7 +17,7 @@ const defaultPage = 1;
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<CatFactData | APIError | null>
+  res: NextApiResponse<CatFactData | APIError>
 ) {
   const { query } = req;
   const params = parseQueryStrings(query);
@@ -27,9 +27,23 @@ export default async function handler(
     res.status(500).json({ error: "Something went wrong" });
   }
 
-  if (facts.data) {
-    facts.data.facts = addIDToCatFacts(facts.data.facts);
+  let sortedFacts: Fact[] = [];
+  if (params.sortByLength) {
+    sortedFacts = sortFactsByLength(
+      facts.data.facts,
+      params.sortByLength == SortOrder.ASC
+    );
+  } else if (params.sortByAlphabet) {
+    sortedFacts = sortFactsAlphabetically(
+      facts.data.facts,
+      params.sortByAlphabet == SortOrder.ASC
+    );
+  } else {
+    sortedFacts = facts.data.facts;
   }
+
+  facts.data.facts = addIDToCatFacts(sortedFacts);
+
   res.status(200).json(facts.data);
 }
 
@@ -46,20 +60,33 @@ const GetCatFacts = async (
       isError: false,
     };
   } catch (error) {
-    return {
-      data: null,
+    return <CatFactAPIResponse>{
       isError: true,
     };
   }
 };
 
-const parseQueryStrings = (query: NextAPIQueryStrings) => {
+const parseQueryStrings = (query: NextAPIQueryStrings): CatFactAPIArgs => {
   const perPage = parseInt(query.perPage as string, 10);
   const page = parseInt(query.page as string, 10);
+  const sortByLength = query.sortByLength as string;
+  const sortByAlphabet = query.sortByAlphabet as string;
+
+  const isValidAlphabetSortOrder = Object.values(SortOrder).includes(
+    sortByAlphabet as SortOrder
+  );
+
+  const isValidLengthSortOrder = Object.values(SortOrder).includes(
+    sortByLength as SortOrder
+  );
 
   return {
-    limit: isNaN(perPage) ? defaultLimit : perPage,
-    page: isNaN(page) ? defaultPage : page,
+    limit: perPage || defaultLimit,
+    page: page || defaultPage,
+    sortByLength: isValidLengthSortOrder ? (sortByLength as SortOrder) : null,
+    sortByAlphabet: isValidAlphabetSortOrder
+      ? (sortByAlphabet as SortOrder)
+      : null,
   };
 };
 
@@ -83,5 +110,29 @@ const addIDToCatFacts = (facts: Fact[]): Fact[] => {
       ...fact,
       id: index + 1,
     };
+  });
+};
+
+const sortFactsAlphabetically = (facts: Fact[], sortAsc = true): Fact[] => {
+  return facts.sort((a, b) => {
+    if (a.fact > b.fact) {
+      return sortAsc ? 1 : -1;
+    }
+    if (a.fact < b.fact) {
+      return sortAsc ? -1 : 1;
+    }
+    return 0;
+  });
+};
+
+const sortFactsByLength = (facts: Fact[], sortAsc = true): Fact[] => {
+  return facts.sort((a, b) => {
+    if (a.length > b.length) {
+      return sortAsc ? 1 : -1;
+    }
+    if (a.length < b.length) {
+      return sortAsc ? -1 : 1;
+    }
+    return 0;
   });
 };

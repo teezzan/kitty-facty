@@ -1,6 +1,8 @@
 export type CatFactAPIArgs = {
   limit: number;
   page: number;
+  sortByLength: SortOrder | null;
+  sortByAlphabet: SortOrder | null;
 };
 
 export type NextAPIQueryStrings = Partial<{
@@ -21,10 +23,15 @@ export type CatFactData = {
 };
 
 export type CatFactAPIResponse = {
-  data: CatFactData | null;
+  data: CatFactData;
   isError: boolean;
 };
 
 export type APIError = {
   error: string;
 };
+
+export enum SortOrder {
+  ASC = "asc",
+  DESC = "desc",
+}
