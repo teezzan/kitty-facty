@@ -1,0 +1,45 @@
+name: Build and Deploy Docker Container
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm test
+  build:
+    name: Build & push container
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.x"
+
+      - name: Build Docker image
+        run: docker build -t teehazzan/kitty-facty:${{ github.sha }} .
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+
+      - name: Push Docker image to DockerHub
+        run: |
+          docker tag teehazzan/kitty-facty:${{ github.sha }} teehazzan/kitty-facty:latest
+          docker push teehazzan/kitty-facty:${{ github.sha }}
+          docker push teehazzan/kitty-facty:latest
