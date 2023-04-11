@@ -41,7 +41,7 @@ export default async function handler(
     sortedFacts = facts.data.facts;
   }
 
-  facts.data.facts = addIDToCatFacts(sortedFacts);
+  facts.data.facts = addIDToCatFacts(sortedFacts, params.page, params.limit);
 
   res.status(200).json(facts.data);
 }

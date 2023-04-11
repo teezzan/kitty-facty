@@ -365,9 +365,9 @@ describe("/api/facts", () => {
       perPage: 10,
       totalPages: 10,
       facts: [
-        { fact: "Fact B", length: 3, id: 1 },
-        { fact: "Fact C", length: 4, id: 2 },
-        { fact: "Fact A", length: 5, id: 3 },
+        { fact: "Fact B", length: 3, id: 11 },
+        { fact: "Fact C", length: 4, id: 12 },
+        { fact: "Fact A", length: 5, id: 13 },
       ],
     });
   });

@@ -32,6 +32,50 @@ describe("addIDToCatFacts", () => {
 
     expect(result).toEqual(expectedFacts);
   });
+
+  it("should calculate id correctly based on current page and limit", () => {
+    const inputFacts = [
+      { fact: "Cats are awesome!", length: 16 },
+      { fact: "Cats are cute!", length: 14 },
+      { fact: "Cats are curious creatures!", length: 17 },
+      { fact: "Cats have nine lives!", length: 21 },
+      { fact: "Cats can see in the dark!", length: 26 },
+    ];
+
+    const expectedFacts = [
+      { fact: "Cats are awesome!", id: 1, length: 16 },
+      { fact: "Cats are cute!", id: 2, length: 14 },
+      { fact: "Cats are curious creatures!", id: 3, length: 17 },
+      { fact: "Cats have nine lives!", id: 4, length: 21 },
+      { fact: "Cats can see in the dark!", id: 5, length: 26 },
+    ];
+
+    const result = addIDToCatFacts(inputFacts as Fact[], 1, 5);
+
+    expect(result).toEqual(expectedFacts);
+  });
+
+  it("should calculate id correctly when current page is greater than 1", () => {
+    const inputFacts = [
+      { fact: "Cats have nine lives!", length: 21 },
+      { fact: "Cats can see in the dark!", length: 26 },
+      { fact: "Cats are awesome!", length: 16 },
+      { fact: "Cats are cute!", length: 14 },
+      { fact: "Cats are curious creatures!", length: 17 },
+    ];
+
+    const expectedFacts = [
+      { fact: "Cats have nine lives!", id: 6, length: 21 },
+      { fact: "Cats can see in the dark!", id: 7, length: 26 },
+      { fact: "Cats are awesome!", id: 8, length: 16 },
+      { fact: "Cats are cute!", id: 9, length: 14 },
+      { fact: "Cats are curious creatures!", id: 10, length: 17 },
+    ];
+
+    const result = addIDToCatFacts(inputFacts as Fact[], 2, 5);
+
+    expect(result).toEqual(expectedFacts);
+  });
 });
 
 describe("sortFactsAlphabetically", () => {

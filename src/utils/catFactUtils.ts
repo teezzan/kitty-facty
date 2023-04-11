@@ -30,11 +30,16 @@ export const parseQueryStrings = (
   };
 };
 
-export const addIDToCatFacts = (facts: Fact[]): Fact[] => {
+export const addIDToCatFacts = (
+  facts: Fact[],
+  currentPage: number = 1,
+  limit: number = config.api.defaultFactPerPage
+): Fact[] => {
   return facts.map((fact, index) => {
+    const id = (currentPage - 1) * limit + index + 1;
     return {
       ...fact,
-      id: index + 1,
+      id,
     };
   });
 };
