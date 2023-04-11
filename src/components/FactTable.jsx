@@ -4,11 +4,21 @@ export default function FactTable() {
   const [facts, setFacts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [pageInput, setPageInput] = useState(currentPage.toString());
+  const [pageInput, setPageInput] = useState(1);
   const [perPage, setPerPage] = useState(10);
+  const [sortByAlphabet, setSortByAlphabet] = useState("");
+  const [sortByLength, setSortByLength] = useState("");
 
   const fetchFacts = (page = 1, limit = 10) => {
-    fetch(`/api/facts?page=${page}&perPage=${limit}`)
+    let url = `/api/facts?page=${page}&perPage=${perPage}`;
+    if (sortByAlphabet) {
+      url += `&sortByAlphabet=${sortByAlphabet}`;
+    }
+    if (sortByLength) {
+      url += `&sortByLength=${sortByLength}`;
+    }
+
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         setFacts(data.facts);
@@ -34,6 +44,13 @@ export default function FactTable() {
     fetchFacts(1, newPerPage);
   };
 
+  const handleSortByAlphabetChange = (e) => {
+    setSortByAlphabet(e.target.value || "");
+  };
+
+  const handleSortByLengthChange = (e) => {
+    setSortByLength(e.target.value || "");
+  };
   const handleFetchClick = () => {
     const page = parseInt(pageInput);
     if (isNaN(page) || page < 1 || page > totalPages) {
@@ -55,6 +72,30 @@ export default function FactTable() {
             value={perPage}
             onChange={handlePerPageChange}
           />
+        </label>
+        <label className="block text-gray-700 font-bold mb-2">
+          Sort by Alphabet
+          <select
+            className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            value={sortByAlphabet}
+            onChange={handleSortByAlphabetChange}
+          >
+            <option value="">-- Select --</option>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </label>
+        <label className="block text-gray-700 font-bold mb-2">
+          Sort by Length
+          <select
+            className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            value={sortByLength}
+            onChange={handleSortByLengthChange}
+          >
+            <option value="">-- Select --</option>
+            <option value="asc">Shortest to Longest</option>
+            <option value="desc">Longest to Shortest</option>
+          </select>
         </label>
       </div>
       <div className="my-4">
