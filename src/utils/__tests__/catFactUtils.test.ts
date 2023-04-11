@@ -1,54 +1,117 @@
-import dotenv from "dotenv";
-import { GetInt, GetString, Keys } from "../env";
+import { Fact } from "@/interfaces/api";
+import {
+  addIDToCatFacts,
+  sortFactsAlphabetically,
+  sortFactsByLength,
+} from "../catFactUtils";
 
-jest.mock("dotenv");
-dotenv.config();
+describe("addIDToCatFacts", () => {
+  it("should add id to each fact in the array", () => {
+    const inputFacts = [
+      { fact: "Cats are awesome!", length: 16 },
+      { fact: "Cats are cute!", length: 14 },
+      { fact: "Cats are curious creatures!", length: 17 },
+    ];
 
-describe("config", () => {
-  beforeEach(() => {
-    jest.resetModules();
-    Keys.length = 0;
+    const expectedFacts = [
+      { fact: "Cats are awesome!", id: 1, length: 16 },
+      { fact: "Cats are cute!", id: 2, length: 14 },
+      { fact: "Cats are curious creatures!", id: 3, length: 17 },
+    ];
+
+    const result = addIDToCatFacts(inputFacts as Fact[]);
+
+    expect(result).toEqual(expectedFacts);
   });
 
-  describe("GetString", () => {
-    it("should return the environment variable if it exists", () => {
-      process.env.TEST_VAR = "test";
-      const result = GetString("TEST_VAR", "fallback");
-      expect(result).toEqual("test");
-    });
+  it("should return an empty array if input is empty", () => {
+    const inputFacts: Fact[] = [];
+    const expectedFacts: Fact[] = [];
 
-    it("should return the fallback if the environment variable does not exist", () => {
-      const result = GetString("MISSING_VAR", "fallback");
-      expect(result).toEqual("fallback");
-    });
+    const result = addIDToCatFacts(inputFacts);
 
-    it("should add the key to Keys", () => {
-      GetString("TEST_VAR", "fallback");
-      expect(Keys).toContain("TEST_VAR");
-    });
+    expect(result).toEqual(expectedFacts);
+  });
+});
+
+describe("sortFactsAlphabetically", () => {
+  const unsortedFacts: Fact[] = [
+    { fact: "Cats are cute", length: 14 },
+    { fact: "Dogs are friendly", length: 18 },
+    { fact: "Birds can fly", length: 14 },
+  ];
+
+  it("should sort facts alphabetically in ascending order", () => {
+    const sortedFacts = sortFactsAlphabetically(unsortedFacts, true);
+
+    expect(sortedFacts).toEqual([
+      { fact: "Birds can fly", length: 14 },
+      { fact: "Cats are cute", length: 14 },
+      { fact: "Dogs are friendly", length: 18 },
+    ]);
   });
 
-  describe("GetInt", () => {
-    it("should return the environment variable as an integer if it exists", () => {
-      process.env.TEST_VAR = "42";
-      const result = GetInt("TEST_VAR", 0);
-      expect(result).toEqual(42);
-    });
+  it("should sort facts alphabetically in descending order", () => {
+    const sortedFacts = sortFactsAlphabetically(unsortedFacts, false);
 
-    it("should return the fallback if the environment variable does not exist", () => {
-      const result = GetInt("MISSING_VAR", 42);
-      expect(result).toEqual(42);
-    });
+    expect(sortedFacts).toEqual([
+      { fact: "Dogs are friendly", length: 18 },
+      { fact: "Cats are cute", length: 14 },
+      { fact: "Birds can fly", length: 14 },
+    ]);
+  });
 
-    it("should return the fallback if the environment variable cannot be parsed as an integer", () => {
-      process.env.TEST_VAR = "notanumber";
-      const result = GetInt("TEST_VAR", 42);
-      expect(result).toEqual(42);
-    });
+  it("should return original array if only one element is present", () => {
+    const singleFactArray = [{ fact: "Cats are cute", length: 14 }];
+    const sortedFacts = sortFactsAlphabetically(singleFactArray, true);
 
-    it("should add the key to Keys", () => {
-      GetInt("TEST_VAR", 0);
-      expect(Keys).toContain("TEST_VAR");
-    });
+    expect(sortedFacts).toEqual(singleFactArray);
+  });
+
+  it("should return empty array if empty array is passed", () => {
+    const emptyArray: Fact[] = [];
+    const sortedFacts = sortFactsAlphabetically(emptyArray, true);
+
+    expect(sortedFacts).toEqual([]);
+  });
+});
+
+describe("sortFactsByLength", () => {
+  const facts = [
+    { fact: "Fact 1", length: 6 },
+    { fact: "Fact 2", length: 5 },
+    { fact: "Fact 3", length: 4 },
+    { fact: "Fact 4", length: 3 },
+    { fact: "Fact 5", length: 2 },
+    { fact: "Fact 6", length: 1 },
+  ];
+
+  it("should sort facts by length in ascending order by default", () => {
+    const sortedFacts = sortFactsByLength(facts);
+    expect(sortedFacts).toEqual([
+      { fact: "Fact 6", length: 1 },
+      { fact: "Fact 5", length: 2 },
+      { fact: "Fact 4", length: 3 },
+      { fact: "Fact 3", length: 4 },
+      { fact: "Fact 2", length: 5 },
+      { fact: "Fact 1", length: 6 },
+    ]);
+  });
+
+  it("should sort facts by length in descending order when sortAsc is false", () => {
+    const sortedFacts = sortFactsByLength(facts, false);
+    expect(sortedFacts).toEqual([
+      { fact: "Fact 1", length: 6 },
+      { fact: "Fact 2", length: 5 },
+      { fact: "Fact 3", length: 4 },
+      { fact: "Fact 4", length: 3 },
+      { fact: "Fact 5", length: 2 },
+      { fact: "Fact 6", length: 1 },
+    ]);
+  });
+
+  it("should return an empty array when given an empty array", () => {
+    const sortedFacts = sortFactsByLength([]);
+    expect(sortedFacts).toEqual([]);
   });
 });

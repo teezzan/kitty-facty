@@ -13,12 +13,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<CatFactData | APIError>
 ) {
+  if (req.method !== "GET") {
+    res.status(405).json({ error: "Method Not Allowed" });
+    return;
+  }
+
   const { query } = req;
   const params = parseQueryStrings(query);
 
   const facts = await GetCatFacts(params);
   if (facts.isError) {
-    res.status(500).json({ error: "Something went wrong" });
+    return res.status(500).json({ error: "Something went wrong" });
   }
 
   let sortedFacts: Fact[] = [];

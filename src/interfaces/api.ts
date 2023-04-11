@@ -13,7 +13,7 @@ export type NextAPIQueryStrings = Partial<{
 }>;
 
 export type Fact = {
-  id: Number;
+  id?: Number;
   fact: String;
   length: Number;
 };
