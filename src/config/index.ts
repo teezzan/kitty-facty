@@ -1,4 +1,4 @@
-import { GetInt, GetString } from "@/utils/env";
+import { GetBool, GetInt, GetString } from "@/utils/env";
 import { EnvConstants } from "./defaultValues";
 
 export default {
@@ -16,5 +16,6 @@ export default {
       EnvConstants.defaultFactMaxLength
     ),
     defaultFactPage: GetInt("DEFAULT_FACTS_PAGE", EnvConstants.defaultFactPage),
+    useCache: GetBool("USE_CACHE", EnvConstants.useCache),
   },
 };

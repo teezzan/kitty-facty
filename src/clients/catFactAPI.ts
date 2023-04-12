@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import NodeCache from "node-cache";
 import {
   CatFactAPIArgs,
   CatFactAPIResponse,
@@ -7,8 +8,9 @@ import {
 import config from "@/config";
 
 const baseURL = config.api.catFactBaseUrl;
+const cache = new NodeCache();
 
-export const GetCatFacts = async (
+export const getCatFactsFromAPI = async (
   params: CatFactAPIArgs
 ): Promise<CatFactAPIResponse> => {
   try {
@@ -43,4 +45,37 @@ export const transformCatFactAPIResponse = (
     totalPages: Number(last_page),
     facts,
   };
+};
+
+export const getCatFactsFromCache = async (
+  params: CatFactAPIArgs
+): Promise<CatFactAPIResponse> => {
+  const { page, limit, maxLength } = params;
+  const key = `${page}-${limit}-${maxLength}`;
+  const cachedData = cache.get(key);
+
+  if (cachedData) {
+    return <CatFactAPIResponse>{
+      data: cachedData,
+      isError: false,
+    };
+  }
+
+  const response = await getCatFactsFromAPI(params);
+
+  if (!response.isError) {
+    cache.set(key, response.data);
+  }
+
+  return response;
+};
+
+export const getCatFacts = async (
+  params: CatFactAPIArgs
+): Promise<CatFactAPIResponse> => {
+  if (config.api.useCache) {
+    return getCatFactsFromCache(params);
+  }
+
+  return getCatFactsFromAPI(params);
 };
