@@ -25,3 +25,17 @@ export function GetInt(key: string, fallback: number): number {
   }
   return fallback;
 }
+
+// GetBool retrieves an environment variable and parses it as boolean.
+export function GetBool(key: string, fallback: boolean): boolean {
+  Keys.push(key);
+  if (process.env[key]) {
+    const strValue = process.env[key]?.toLowerCase() || "";
+    if (strValue === "true" || strValue === "1") {
+      return true;
+    } else if (strValue === "false" || strValue === "0") {
+      return false;
+    }
+  }
+  return fallback;
+}

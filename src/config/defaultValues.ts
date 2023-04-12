@@ -3,4 +3,5 @@ export namespace EnvConstants {
   export const defaultFactPage = 1;
   export const defaultFactMaxLength = 140;
   export const catFactAPIBaseUrl = "https://catfact.ninja/facts";
+  export const useCache = true;
 }
