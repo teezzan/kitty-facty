@@ -1,11 +1,11 @@
 import { createMocks } from "node-mocks-http";
 import handler from "@/pages/api/facts";
-import { GetCatFacts } from "../clients/catFactAPI";
+import { getCatFacts } from "../clients/catFactAPI";
 import config from "@/config";
 import { SortOrder } from "@/interfaces/constants";
 
 jest.mock("../clients/catFactAPI", () => ({
-  GetCatFacts: jest.fn(),
+  getCatFacts: jest.fn(),
 }));
 
 describe("/api/facts", () => {
@@ -29,14 +29,14 @@ describe("/api/facts", () => {
       query: {},
     });
 
-    // mock GetCatFacts function to return an error
-    (GetCatFacts as jest.Mock).mockImplementation(() =>
+    // mock getCatFacts function to return an error
+    (getCatFacts as jest.Mock).mockImplementation(() =>
       Promise.resolve({ isError: true })
     );
 
     await handler(req, res);
 
-    expect(GetCatFacts).toHaveBeenCalledWith({
+    expect(getCatFacts).toHaveBeenCalledWith({
       limit: config.api.defaultFactPerPage,
       maxLength: config.api.defaultFactMaxLength,
       page: config.api.defaultFactPage,
@@ -55,9 +55,9 @@ describe("/api/facts", () => {
       method: "POST",
       query: {},
     });
-  
+
     await handler(req, res);
-  
+
     expect(res._getStatusCode()).toBe(405);
     const body = JSON.parse(res._getData());
     expect(body).toEqual({ error: "Method Not Allowed" });
@@ -69,14 +69,14 @@ describe("/api/facts", () => {
       query: {},
     });
 
-    // mock GetCatFacts function
-    (GetCatFacts as jest.Mock).mockImplementation(() =>
+    // mock getCatFacts function
+    (getCatFacts as jest.Mock).mockImplementation(() =>
       Promise.resolve(mockedFacts)
     );
 
     await handler(req, res);
 
-    expect(GetCatFacts).toHaveBeenCalledWith({
+    expect(getCatFacts).toHaveBeenCalledWith({
       limit: config.api.defaultFactPerPage,
       maxLength: config.api.defaultFactMaxLength,
       page: config.api.defaultFactPage,
@@ -106,14 +106,14 @@ describe("/api/facts", () => {
       },
     });
 
-    // mock GetCatFacts function
-    (GetCatFacts as jest.Mock).mockImplementation(() =>
+    // mock getCatFacts function
+    (getCatFacts as jest.Mock).mockImplementation(() =>
       Promise.resolve(mockedFacts)
     );
 
     await handler(req, res);
 
-    expect(GetCatFacts).toHaveBeenCalledWith({
+    expect(getCatFacts).toHaveBeenCalledWith({
       limit: config.api.defaultFactPerPage,
       maxLength: config.api.defaultFactMaxLength,
       page: config.api.defaultFactPage,
@@ -143,14 +143,14 @@ describe("/api/facts", () => {
       },
     });
 
-    // mock GetCatFacts function
-    (GetCatFacts as jest.Mock).mockImplementation(() =>
+    // mock getCatFacts function
+    (getCatFacts as jest.Mock).mockImplementation(() =>
       Promise.resolve(mockedFacts)
     );
 
     await handler(req, res);
 
-    expect(GetCatFacts).toHaveBeenCalledWith({
+    expect(getCatFacts).toHaveBeenCalledWith({
       limit: config.api.defaultFactPerPage,
       maxLength: config.api.defaultFactMaxLength,
       page: config.api.defaultFactPage,
@@ -180,14 +180,14 @@ describe("/api/facts", () => {
       },
     });
 
-    // mock GetCatFacts function
-    (GetCatFacts as jest.Mock).mockImplementation(() =>
+    // mock getCatFacts function
+    (getCatFacts as jest.Mock).mockImplementation(() =>
       Promise.resolve(mockedFacts)
     );
 
     await handler(req, res);
 
-    expect(GetCatFacts).toHaveBeenCalledWith({
+    expect(getCatFacts).toHaveBeenCalledWith({
       limit: config.api.defaultFactPerPage,
       maxLength: config.api.defaultFactMaxLength,
       page: config.api.defaultFactPage,
@@ -217,14 +217,14 @@ describe("/api/facts", () => {
       },
     });
 
-    // mock GetCatFacts function
-    (GetCatFacts as jest.Mock).mockImplementation(() =>
+    // mock getCatFacts function
+    (getCatFacts as jest.Mock).mockImplementation(() =>
       Promise.resolve(mockedFacts)
     );
 
     await handler(req, res);
 
-    expect(GetCatFacts).toHaveBeenCalledWith({
+    expect(getCatFacts).toHaveBeenCalledWith({
       limit: config.api.defaultFactPerPage,
       maxLength: config.api.defaultFactMaxLength,
       page: config.api.defaultFactPage,
@@ -254,14 +254,14 @@ describe("/api/facts", () => {
       },
     });
 
-    // mock GetCatFacts function
-    (GetCatFacts as jest.Mock).mockImplementation(() =>
+    // mock getCatFacts function
+    (getCatFacts as jest.Mock).mockImplementation(() =>
       Promise.resolve(mockedFacts)
     );
 
     await handler(req, res);
 
-    expect(GetCatFacts).toHaveBeenCalledWith({
+    expect(getCatFacts).toHaveBeenCalledWith({
       limit: config.api.defaultFactPerPage,
       maxLength: config.api.defaultFactMaxLength,
       page: config.api.defaultFactPage,
@@ -291,14 +291,14 @@ describe("/api/facts", () => {
       },
     });
 
-    // mock GetCatFacts function
-    (GetCatFacts as jest.Mock).mockImplementation(() =>
+    // mock getCatFacts function
+    (getCatFacts as jest.Mock).mockImplementation(() =>
       Promise.resolve(mockedFacts)
     );
 
     await handler(req, res);
 
-    expect(GetCatFacts).toHaveBeenCalledWith({
+    expect(getCatFacts).toHaveBeenCalledWith({
       limit: config.api.defaultFactPerPage,
       maxLength: config.api.defaultFactMaxLength,
       page: config.api.defaultFactPage,
@@ -343,14 +343,14 @@ describe("/api/facts", () => {
       },
     });
 
-    // mock GetCatFacts function
-    (GetCatFacts as jest.Mock).mockImplementation(() =>
+    // mock getCatFacts function
+    (getCatFacts as jest.Mock).mockImplementation(() =>
       Promise.resolve(mockedFacts)
     );
 
     await handler(req, res);
 
-    expect(GetCatFacts).toHaveBeenCalledWith({
+    expect(getCatFacts).toHaveBeenCalledWith({
       limit: config.api.defaultFactPerPage,
       maxLength: config.api.defaultFactMaxLength,
       page: 2,
@@ -381,14 +381,14 @@ describe("/api/facts", () => {
       },
     });
 
-    // mock GetCatFacts function
-    (GetCatFacts as jest.Mock).mockImplementation(() =>
+    // mock getCatFacts function
+    (getCatFacts as jest.Mock).mockImplementation(() =>
       Promise.resolve(mockedFacts)
     );
 
     await handler(req, res);
 
-    expect(GetCatFacts).toHaveBeenCalledWith({
+    expect(getCatFacts).toHaveBeenCalledWith({
       limit: config.api.defaultFactPerPage,
       maxLength: config.api.defaultFactMaxLength,
       page: config.api.defaultFactPage,
@@ -419,14 +419,14 @@ describe("/api/facts", () => {
       },
     });
 
-    // mock GetCatFacts function
-    (GetCatFacts as jest.Mock).mockImplementation(() =>
+    // mock getCatFacts function
+    (getCatFacts as jest.Mock).mockImplementation(() =>
       Promise.resolve(mockedFacts)
     );
 
     await handler(req, res);
 
-    expect(GetCatFacts).toHaveBeenCalledWith({
+    expect(getCatFacts).toHaveBeenCalledWith({
       limit: config.api.defaultFactPerPage,
       maxLength: config.api.defaultFactMaxLength,
       page: config.api.defaultFactPage,

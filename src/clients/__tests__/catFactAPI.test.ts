@@ -26,6 +26,24 @@ describe("GetCatFacts", () => {
     jest.resetAllMocks();
   });
 
+  it("should return isError as true if request fails", async () => {
+    const mockError = new Error("Request failed");
+    (axios.get as jest.MockedFunction<typeof axios.get>).mockRejectedValue(
+      mockError
+    );
+
+    const result = await getCatFacts(params as CatFactAPIArgs);
+
+    expect(axios.get).toHaveBeenCalledWith(config.api.catFactBaseUrl, {
+      params: {
+        limit: params.limit,
+        page: params.page,
+        max_length: params.maxLength,
+      },
+    });
+    expect(result).toEqual({ isError: true });
+  });
+
   it("should return expected response if request is successful", async () => {
     (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue({
       data: mockSuccessResponse,
@@ -49,24 +67,6 @@ describe("GetCatFacts", () => {
       },
       isError: false,
     });
-  });
-
-  it("should return isError as true if request fails", async () => {
-    const mockError = new Error("Request failed");
-    (axios.get as jest.MockedFunction<typeof axios.get>).mockRejectedValue(
-      mockError
-    );
-
-    const result = await getCatFacts(params as CatFactAPIArgs);
-
-    expect(axios.get).toHaveBeenCalledWith(config.api.catFactBaseUrl, {
-      params: {
-        limit: params.limit,
-        page: params.page,
-        max_length: params.maxLength,
-      },
-    });
-    expect(result).toEqual({ isError: true });
   });
 
   it("should transform the API response correctly", async () => {
