@@ -58,7 +58,7 @@ GET /api/facts?perPage=3&page=21&sortByLength=desc&sortByAlphabet=asc&maxLength=
 
 ### **Sample Response**
 
-```bash
+```javascript
 HTTP/1.1 200 OK
 Content-Type: application/json
 
@@ -91,8 +91,8 @@ Content-Type: application/json
 
 To run tests:
 
-```javascript
-npm run test
+```bash
+make test
 ```
 
 ## Docker
@@ -102,13 +102,13 @@ To build and run the application using Docker:
 - Build the Docker image:
 
 ```bash
-docker build -t kitty-facty .
+make build
 ```
 
 - Run the Docker container:
 
 ```bash
-docker run -p 3000:3000 kitty-facty
+make docker-up
 ```
 
 ## License
