@@ -1,4 +1,4 @@
-import { GetCatFacts } from "@/clients/catFactAPI";
+import { getCatFacts } from "@/clients/catFactAPI";
 import { APIError, CatFactData, Fact } from "@/interfaces/api";
 import { SortOrder } from "@/interfaces/constants";
 import {
@@ -21,7 +21,7 @@ export default async function handler(
   const { query } = req;
   const params = parseQueryStrings(query);
 
-  const facts = await GetCatFacts(params);
+  const facts = await getCatFacts(params);
   if (facts.isError) {
     return res.status(500).json({ error: "Something went wrong" });
   }

@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import {
-  GetCatFacts,
+  getCatFacts,
   transformCatFactAPIResponse,
 } from "../../clients/catFactAPI";
 import { CatFactAPIArgs } from "@/interfaces/api";
@@ -30,7 +30,7 @@ describe("GetCatFacts", () => {
     (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue({
       data: mockSuccessResponse,
     });
-    const result = await GetCatFacts(params as CatFactAPIArgs);
+    const result = await getCatFacts(params as CatFactAPIArgs);
 
     expect(axios.get).toHaveBeenCalledWith(config.api.catFactBaseUrl, {
       params: {
@@ -57,7 +57,7 @@ describe("GetCatFacts", () => {
       mockError
     );
 
-    const result = await GetCatFacts(params as CatFactAPIArgs);
+    const result = await getCatFacts(params as CatFactAPIArgs);
 
     expect(axios.get).toHaveBeenCalledWith(config.api.catFactBaseUrl, {
       params: {
@@ -93,7 +93,7 @@ describe("GetCatFacts", () => {
     (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue({
       data: mockSuccessResponse,
     });
-    const result = await GetCatFacts(params as CatFactAPIArgs);
+    const result = await getCatFacts(params as CatFactAPIArgs);
     const transformedResponse = transformCatFactAPIResponse({
       data: mockSuccessResponse,
     } as any);
