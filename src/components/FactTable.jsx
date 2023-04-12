@@ -6,11 +6,12 @@ export default function FactTable() {
   const [totalPages, setTotalPages] = useState(0);
   const [pageInput, setPageInput] = useState(1);
   const [perPage, setPerPage] = useState(10);
+  const [maxLength, setMaxLength] = useState(100);
   const [sortByAlphabet, setSortByAlphabet] = useState("");
   const [sortByLength, setSortByLength] = useState("");
 
   const fetchFacts = (page = 1, limit = 10) => {
-    let url = `/api/facts?page=${page}&perPage=${perPage}`;
+    let url = `/api/facts?page=${page}&perPage=${perPage}&maxLength=${maxLength}`;
     if (sortByAlphabet) {
       url += `&sortByAlphabet=${sortByAlphabet}`;
     }
@@ -44,6 +45,15 @@ export default function FactTable() {
     fetchFacts(1, newPerPage);
   };
 
+  const handleMaxLengthChange = (e) => {
+    const newMaxLength = parseInt(e.target.value);
+    if (newMaxLength < 1) {
+      return;
+    }
+    setMaxLength(newMaxLength);
+    fetchFacts(1, perPage);
+  };
+
   const handleSortByAlphabetChange = (e) => {
     setSortByAlphabet(e.target.value || "");
   };
@@ -64,7 +74,7 @@ export default function FactTable() {
     <div className="mx-auto w-full max-w-3xl">
       <div className="my-4">
         <label className="block text-gray-700 font-bold mb-2">
-          Per Page
+          Per Page 
           <input
             className="shadow appearance-none border rounded w-16 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="number"
@@ -74,7 +84,17 @@ export default function FactTable() {
           />
         </label>
         <label className="block text-gray-700 font-bold mb-2">
-          Sort by Alphabet
+          Max Length 
+          <input
+            className="shadow appearance-none border rounded w-16 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type="number"
+            min="1"
+            value={maxLength}
+            onChange={handleMaxLengthChange}
+          />
+        </label>
+        <label className="block text-gray-700 font-bold mb-2">
+          Sort by Alphabet 
           <select
             className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             value={sortByAlphabet}
@@ -83,10 +103,10 @@ export default function FactTable() {
             <option value="">-- Select --</option>
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
-          </select>
+           </select>
         </label>
         <label className="block text-gray-700 font-bold mb-2">
-          Sort by Length
+          Sort by Length 
           <select
             className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             value={sortByLength}
@@ -100,7 +120,7 @@ export default function FactTable() {
       </div>
       <div className="my-4">
         <label className="block text-gray-700 font-bold mb-2">
-          Page
+          Page   
           <select
             className="shadow appearance-none border rounded w-16 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             value={pageInput}
