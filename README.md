@@ -17,6 +17,7 @@ Kitty Facty provides the following features to its users:
 
 - Pagination of cat facts.
 - Sorting of cat facts by length or alphabetically.
+- Caching of cat facts to reduce the number of API calls.
 - Error handling in case something goes wrong with the Cat Fact API.
 
 ## Project Structure
@@ -42,13 +43,16 @@ Returns a list of cat facts based on the provided query parameters.
 The following query parameters are supported:
 | Query String Parameter | Description | Example |
 | ---------------------- | ----------- | ------- |
-| `perPage` | Number of facts to return per page. Default is 10. Maximum is 50. | `perPage=25` |
-| `page` | Page number to return. Default is 1. | `page=3` |
+| `perPage` | Number of facts to return per page. Default is `DEFAULT_FACTS_PER_PAGE`. | `perPage=25` |
+| `page` | Page number to return. Default is `DEFAULT_FACTS_PAGE`. | `page=3` |
 | `sortByLength` | Sort facts by length. Enumerated values: `asc` (ascending) or `desc` (descending). | `sortByLength=desc` |
 | `sortByAlphabet` | Sort facts alphabetically. Enumerated values: `asc` (ascending) or `desc` (descending). | `sortByAlphabet=asc` |
-| `maxLength` | Maximum length of the returned facts. | `maxLength=100` |
+| `maxLength` | Maximum length of the returned facts. default is `DEFAULT_FACTS_MAX_LENGTH`| `maxLength=100` |
 
 Note that the `sortByLength` and `sortByAlphabet` query parameters are mutually exclusive. If both are provided, the `sortByLength` parameter will take precedence.
+
+All parameters are optional.
+All default values are defined in `src/config/defaultValues.ts` and can be overridden by environment variables.
 
 ### **Sample Request**
 

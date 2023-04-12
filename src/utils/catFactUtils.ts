@@ -20,9 +20,12 @@ export const parseQueryStrings = (
   );
 
   return {
-    limit: perPage || config.api.defaultFactPerPage,
-    page: page || config.api.defaultFactPage,
-    maxLength: maxLength || config.api.defaultFactMaxLength,
+    limit: getPositiveNumberOrDefault(perPage, config.api.defaultFactPerPage),
+    page: getPositiveNumberOrDefault(page, config.api.defaultFactPage),
+    maxLength: getPositiveNumberOrDefault(
+      maxLength,
+      config.api.defaultFactMaxLength
+    ),
     sortByLength: isValidLengthSortOrder ? (sortByLength as SortOrder) : null,
     sortByAlphabet: isValidAlphabetSortOrder
       ? (sortByAlphabet as SortOrder)
@@ -70,3 +73,14 @@ export const sortFactsByLength = (facts: Fact[], sortAsc = true): Fact[] => {
     return 0;
   });
 };
+
+function getPositiveNumberOrDefault(
+  num: number | undefined,
+  fallback: number
+): number {
+  const parsedNum = typeof num === "number" ? num : NaN;
+  if (isNaN(parsedNum) || parsedNum <= 0) {
+    return fallback;
+  }
+  return parsedNum;
+}
