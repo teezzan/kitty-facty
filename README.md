@@ -1,24 +1,98 @@
-# Kitty Facty
+# Kitty Facty - The Ultimate Kitty Fact Finder
 
-Welcome to Kitty Facty, the web application that provides random cat facts to its users. This application is built using Next.js and the Cat Fact API.
+![Logo](./public/kitty.png)
+
+Kitty Facty is a simple web application that allows users to browse cat facts. It is built using Next.js and TypeScript. It has the following features:
+
+- Pagination of cat facts.
+- Sorting of cat facts by length, alphabetically or by length.
+- Caching of cat facts to reduce the number of API calls.
+- Error handling in case something goes wrong with the Cat Fact API.
+
+## Built With
+
+- [Typescript](https://www.typescriptlang.org/)
+- [Next.js](https://nextjs.org/)
+
+## Demo
+
+A live demo of the application can be found [here](https://kitty-facty.vercel.app/).
+
+![Screenshot](./public/screenshot.png)
+
+## Quick Start 🚀
+
+The quickest way to get started is to run the latest version of the application using [Docker](https://www.docker.com/). To do this, follow these steps:
+
+- Pull the latest image from Docker Hub: `docker pull teezzan/kitty-facty:latest`
+- Start the Docker container: `docker run -p 3000:3000 teezzan/kitty-facty:latest`
+
+Viola! The application is now running on your local machine. You can now access it at `http://localhost:3000`.
 
 ## Getting Started
 
-To get started with Kitty Facty, follow these steps:
+This application can be deployed locally by the following ways.
 
-- Clone this repository to your local machine.
-- Install the dependencies by running npm install in the project root directory.
-- Start the development server by running npm run dev.
-- Open your browser and navigate to http://localhost:3000.
+- Using [Docker](https://www.docker.com/)
+- Using the local environment.
 
-## Features
+### Prerequisites
 
-Kitty Facty provides the following features to its users:
+To run the application on your local computer, you need to have the following installed:
 
-- Pagination of cat facts.
-- Sorting of cat facts by length or alphabetically.
-- Caching of cat facts to reduce the number of API calls.
-- Error handling in case something goes wrong with the Cat Fact API.
+- [Node.js](https://nodejs.org/en/)
+- [Make](https://www.gnu.org/software/make/)
+- [Docker](https://www.docker.com/) (optional)
+
+While you don't need an `.env` file to run the application, it is the means by which you can chnage the default values for the application. A sample .env file named `.env.example` is provided. You can make a copy, rename it to `.env`, and update the values as needed.
+
+### Docker
+
+- Clone the repository and navigate to the project directory:
+
+```bash
+git clone https://github.com/teezzan/kitty-facty.git
+cd kitty-facty
+```
+
+- Build the Docker image:
+
+```bash
+make build
+```
+
+- Run the Docker container:
+
+```bash
+make docker-up
+```
+
+### Local Environment
+
+To deploy the application locally, follow these steps:
+
+- Clone the repository: `git clone https://github.com/teezzan/kitty-facty.git`
+- Navigate to the project directory: `cd kitty-facty`
+- Install dependencies: `make install`
+- Start the local server: `make serve`
+
+## Makefile
+
+To view the available make commands, run make help.
+
+```bash
+------------------------------------------------------------------------
+kitty-facty
+------------------------------------------------------------------------
+serve                          Run locally
+build                          Build application binaries
+lint                           Run linters
+test                           Run unit tests
+image                          Create Docker image
+docker-up                      Start docker image
+install                        Install dependencies
+help                           Show this help
+```
 
 ## Project Structure
 
@@ -99,22 +173,10 @@ To run tests:
 make test
 ```
 
-## Docker
-
-To build and run the application using Docker:
-
-- Build the Docker image:
-
-```bash
-make build
-```
-
-- Run the Docker container:
-
-```bash
-make docker-up
-```
-
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for more information.
+
+## Authors
+
+**[Taiwo Yusuf](https://github.com/teezzan/)**
