@@ -10,6 +10,11 @@ import config from "@/config";
 const baseURL = config.api.catFactBaseUrl;
 const cache = new NodeCache();
 
+/**
+ * Fetches cat facts from the Cat Fact API.
+ * @param params - The query parameters for the API request.
+ * @returns A Promise that resolves to a CatFactAPIResponse object.
+ */
 export const getCatFactsFromAPI = async (
   params: CatFactAPIArgs
 ): Promise<CatFactAPIResponse> => {
@@ -33,6 +38,11 @@ export const getCatFactsFromAPI = async (
   }
 };
 
+/**
+ * Transforms the response from the Cat Fact API to a CatFactData object.
+ * @param response - The AxiosResponse object returned by the API.
+ * @returns A CatFactData object.
+ */
 export const transformCatFactAPIResponse = (
   response: AxiosResponse<any, any>
 ): CatFactData => {
@@ -47,6 +57,11 @@ export const transformCatFactAPIResponse = (
   };
 };
 
+/**
+ * Fetches cat facts from the cache if they exist, otherwise fetches them from the API.
+ * @param params - The query parameters for the API request.
+ * @returns A Promise that resolves to a CatFactAPIResponse object.
+ */
 export const getCatFactsFromCache = async (
   params: CatFactAPIArgs
 ): Promise<CatFactAPIResponse> => {
@@ -70,6 +85,11 @@ export const getCatFactsFromCache = async (
   return response;
 };
 
+/**
+ * Fetches cat facts either from the cache or the Cat Fact API depending on the value of `config.api.useCache`.
+ * @param params - The query parameters for the API request.
+ * @returns A Promise that resolves to a CatFactAPIResponse object.
+ */
 export const getCatFacts = async (
   params: CatFactAPIArgs
 ): Promise<CatFactAPIResponse> => {

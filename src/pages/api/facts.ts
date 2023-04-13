@@ -9,6 +9,13 @@ import {
 } from "@/utils";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+/**
+ * Handles the HTTP GET request for the cat facts API endpoint.
+ * @async
+ * @param {NextApiRequest} req - The HTTP request object.
+ * @param {NextApiResponse<CatFactData | APIError>} res - The HTTP response object.
+ * @returns {Promise<void>}
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<CatFactData | APIError>

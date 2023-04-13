@@ -33,3 +33,7 @@ image: ## Create Docker image
 .PHONY: docker-up
 docker-up: ## Start docker image
 	docker run -p 3000:3000 kitty-facty
+
+.PHONY: install
+install: ## Install dependencies
+	npm install
